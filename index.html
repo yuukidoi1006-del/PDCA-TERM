@@ -252,6 +252,11 @@ body{
 .hist-empty{
   padding:16px 14px;font-size:14px;color:var(--secondary-label);text-align:center;
 }
+
+/* ---------- Firebase account ---------- */
+.auth-card{margin:0 16px 14px;padding:12px 14px;background:var(--card);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.auth-copy{min-width:0;flex:1}.auth-name{font-size:14px;font-weight:700;color:var(--label);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.auth-status{font-size:12px;color:var(--secondary-label);margin-top:2px}
+.auth-btn{border:0;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer;background:#26234F;color:#fff;white-space:nowrap}.auth-btn.secondary{background:#ECECF2;color:#26234F}.auth-btn:disabled{opacity:.55;cursor:default}
 </style>
 </head>
 <body>
@@ -260,6 +265,15 @@ body{
   <div class="navbar">
     <div class="large-title">PDCA</div>
     <div class="subtitle">日々のサイクルを記録する</div>
+  </div>
+
+
+  <div class="auth-card" id="authCard">
+    <div class="auth-copy">
+      <div class="auth-name" id="authName">ゲスト利用中</div>
+      <div class="auth-status" id="authStatus">この端末に保存されます</div>
+    </div>
+    <button class="auth-btn" id="authBtn" type="button">Googleでログイン</button>
   </div>
 
   <div class="widget" id="widget">
@@ -354,6 +368,61 @@ body{
 
 </div>
 
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAtWpFPPtzY5nHcoeChH7D7zmxTneVcCOw",
+  authDomain: "pdca-term.firebaseapp.com",
+  projectId: "pdca-term",
+  storageBucket: "pdca-term.firebasestorage.app",
+  messagingSenderId: "855752658794",
+  appId: "1:855752658794:web:4b06a6d0fb37412e88df13",
+  measurementId: "G-YD2J3PHZYD"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+
+let currentUser = null;
+let resolveAuth;
+const authReady = new Promise(resolve => { resolveAuth = resolve; });
+
+window.firebaseBridge = {
+  authReady,
+  get user(){ return currentUser; },
+  async login(){ return signInWithPopup(auth, provider); },
+  async logout(){ return signOut(auth); },
+  async loadCloud(){
+    if(!currentUser) return null;
+    const snap = await getDoc(doc(db, "users", currentUser.uid));
+    return snap.exists() ? snap.data() : null;
+  },
+  async saveCloud(data){
+    if(!currentUser) return;
+    await setDoc(doc(db, "users", currentUser.uid), {
+      entries: data.entries || {},
+      displayName: currentUser.displayName || "",
+      email: currentUser.email || "",
+      photoURL: currentUser.photoURL || "",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  }
+};
+
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  window.dispatchEvent(new CustomEvent("pdca-auth-changed", { detail: { user } }));
+  resolveAuth(user);
+});
+</script>
+
 <script>
 const STORAGE_KEY = 'pdca-data';
 let state = { entries: {} };
@@ -389,12 +458,30 @@ async function loadData(){
   }catch(e){
     state = { entries: {} };
   }
+
+  try{
+    if(window.firebaseBridge){
+      await window.firebaseBridge.authReady;
+      const cloud = await window.firebaseBridge.loadCloud();
+      if(cloud && cloud.entries){
+        state = { entries: cloud.entries };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+    }
+  }catch(e){
+    console.error('cloud load failed', e);
+    showToast('クラウド読込に失敗しました');
+  }
 }
 async function persist(){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if(window.firebaseBridge && window.firebaseBridge.user){
+      await window.firebaseBridge.saveCloud(state);
+    }
   }catch(e){
     console.error('storage save failed', e);
+    throw e;
   }
 }
 
@@ -650,6 +737,50 @@ function shareToLine(){
   window.open(url, '_blank');
 }
 
+function updateAuthUI(user){
+  const name = document.getElementById('authName');
+  const status = document.getElementById('authStatus');
+  const btn = document.getElementById('authBtn');
+  if(user){
+    name.textContent = user.displayName || user.email || 'ログイン中';
+    status.textContent = 'クラウド同期中';
+    btn.textContent = 'ログアウト';
+    btn.classList.add('secondary');
+  }else{
+    name.textContent = 'ゲスト利用中';
+    status.textContent = 'この端末に保存されます';
+    btn.textContent = 'Googleでログイン';
+    btn.classList.remove('secondary');
+  }
+}
+
+window.addEventListener('pdca-auth-changed', async (event)=>{
+  updateAuthUI(event.detail.user);
+  if(event.detail.user){
+    await loadData();
+    renderWidget(); renderDayStrip(); loadFieldsForCurrentDate(); renderRing(); renderHistory();
+  }
+});
+
+document.getElementById('authBtn').addEventListener('click', async ()=>{
+  const btn = document.getElementById('authBtn');
+  btn.disabled = true;
+  try{
+    if(window.firebaseBridge.user){
+      await window.firebaseBridge.logout();
+      showToast('ログアウトしました');
+    }else{
+      await window.firebaseBridge.login();
+      showToast('ログインしました');
+    }
+  }catch(e){
+    console.error(e);
+    showToast(e.code === 'auth/popup-closed-by-user' ? 'ログインを中止しました' : 'ログインに失敗しました');
+  }finally{
+    btn.disabled = false;
+  }
+});
+
 document.getElementById('saveBtn').addEventListener('click', saveCurrentDate);
 document.getElementById('shareBtn').addEventListener('click', shareGeneric);
 document.getElementById('lineBtn').addEventListener('click', shareToLine);
@@ -659,6 +790,7 @@ document.getElementById('datePicker').addEventListener('change', (e)=>{
 });
 
 (async function init(){
+  updateAuthUI(null);
   await loadData();
   renderWidget();
   renderDayStrip();
