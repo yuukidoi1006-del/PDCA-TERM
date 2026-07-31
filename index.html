@@ -264,6 +264,9 @@ body{
 .team-actions{display:flex;gap:8px;margin-top:12px}.team-actions button,.team-card button.mini{border:0;border-radius:10px;padding:9px 11px;font-size:13px;font-weight:700;cursor:pointer}.team-primary{background:#26234F;color:#fff}.team-secondary{background:#ECECF2;color:#26234F}.team-danger{background:#FFE9E9;color:#C62828}
 .team-panel{display:none;margin-top:12px;padding-top:12px;border-top:.5px solid var(--separator)}.team-panel.show{display:block}.team-input{width:100%;border:1px solid var(--separator);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px;background:#FAFAFB}.team-input+.team-input{margin-top:8px}
 .invite-box{margin-top:10px;padding:10px 12px;border-radius:10px;background:#F4F3FF;font-size:12px;color:#514C87;word-break:break-all}.member-list,.team-feed{margin-top:10px;display:flex;flex-direction:column;gap:8px}.member-row,.feed-row{padding:10px 11px;border-radius:11px;background:#F7F7FA}.member-name{font-size:13px;font-weight:700}.member-email,.feed-meta{font-size:11px;color:var(--secondary-label);margin-top:2px}.feed-title{font-size:13px;font-weight:700}.feed-preview{font-size:12px;line-height:1.45;color:#4A4A4F;margin-top:5px;white-space:pre-wrap}.team-empty{font-size:13px;color:var(--secondary-label);padding:8px 0}.team-badge{font-size:11px;font-weight:700;background:#E9E8FB;color:#514C87;padding:5px 8px;border-radius:999px}.team-status-dot{width:9px;height:9px;border-radius:50%;background:#C7C7CC}.team-status-dot.on{background:#34C759}
+
+/* ---------- Phase 3 dashboard & comments ---------- */
+.team-filter-row{display:flex;gap:8px;align-items:center;margin-top:12px}.team-filter-row label{font-size:12px;color:var(--secondary-label);font-weight:700}.team-date-filter{flex:1;border:1px solid var(--separator);border-radius:10px;padding:9px 10px;background:#FAFAFB;font:inherit}.submission-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.summary-box{padding:10px 8px;border-radius:11px;background:#F7F7FA;text-align:center}.summary-num{font-size:20px;font-weight:800;color:#26234F}.summary-label{font-size:10px;color:var(--secondary-label);margin-top:2px}.missing-list{margin-top:8px;font-size:12px;color:#C62828;line-height:1.5}.feed-full{margin-top:8px;padding:9px;border-radius:9px;background:#fff;font-size:12px;line-height:1.45;white-space:pre-wrap}.comment-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}.comment-row{padding:7px 8px;border-radius:8px;background:#ECECF2;font-size:11px;line-height:1.4}.comment-author{font-weight:700;color:#26234F}.comment-compose{display:flex;gap:6px;margin-top:8px}.comment-input{flex:1;border:1px solid var(--separator);border-radius:9px;padding:8px;font:inherit;font-size:12px}.comment-send{border:0;border-radius:9px;padding:8px 10px;background:#26234F;color:#fff;font-size:12px;font-weight:700;cursor:pointer}.feed-row{cursor:default}
 </style>
 </head>
 <body>
@@ -308,6 +311,13 @@ body{
     <div class="team-panel" id="activeTeamPanel">
       <div class="invite-box" id="inviteBox"></div>
       <div class="team-actions"><button class="team-secondary" id="copyInviteBtn" type="button">招待コードをコピー</button><button class="team-danger" id="leaveTeamBtn" type="button">退出</button></div>
+      <div class="team-filter-row"><label for="teamDateFilter">提出日</label><input class="team-date-filter" id="teamDateFilter" type="date"></div>
+      <div class="submission-summary">
+        <div class="summary-box"><div class="summary-num" id="submittedCount">0</div><div class="summary-label">提出済み</div></div>
+        <div class="summary-box"><div class="summary-num" id="missingCount">0</div><div class="summary-label">未提出</div></div>
+        <div class="summary-box"><div class="summary-num" id="submissionRate">0%</div><div class="summary-label">提出率</div></div>
+      </div>
+      <div class="missing-list" id="missingList"></div>
       <div class="section-label" style="padding-top:14px">メンバー</div>
       <div class="member-list" id="memberList"></div>
       <div class="section-label" style="padding-top:14px">チームの最新PDCA</div>
@@ -491,6 +501,18 @@ window.firebaseBridge = {
   },
   async listTeamPdcas(teamId){
     const q=query(collection(db,"teams",teamId,"pdcas"),orderBy("updatedAt","desc"),limit(20));
+    const s=await getDocs(q); return s.docs.map(d=>({id:d.id,...d.data()}));
+  },
+  async listTeamPdcasByDate(teamId,date){
+    const q=query(collection(db,"teams",teamId,"pdcas"),where("date","==",date));
+    const s=await getDocs(q); return s.docs.map(d=>({id:d.id,...d.data()}));
+  },
+  async addComment(teamId,pdcaId,text){
+    if(!currentUser) throw new Error("login-required");
+    await addDoc(collection(db,"teams",teamId,"pdcas",pdcaId,"comments"),{uid:currentUser.uid,displayName:currentUser.displayName||currentUser.email||"メンバー",text:text.trim(),createdAt:serverTimestamp()});
+  },
+  async listComments(teamId,pdcaId){
+    const q=query(collection(db,"teams",teamId,"pdcas",pdcaId,"comments"),orderBy("createdAt","asc"),limit(50));
     const s=await getDocs(q); return s.docs.map(d=>({id:d.id,...d.data()}));
   }
 };
@@ -830,6 +852,26 @@ function resetTeamUI(){
   document.getElementById('teamRole').style.display='none'; document.getElementById('activeTeamPanel').classList.remove('show');
   document.getElementById('teamGuestActions').style.display=window.firebaseBridge?.user?'flex':'none';
 }
+function escapeHtml(text){
+  return String(text??'').replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+}
+async function renderPdcaFeedItem(feed,p){
+  const row=document.createElement('div'); row.className='feed-row';
+  const filled=[p.plan,p.do,p.check,p.act].filter(x=>(x||'').trim()).length;
+  row.innerHTML='<div class="feed-title"></div><div class="feed-meta"></div><div class="feed-full"></div><div class="comment-list"></div><div class="comment-compose"><input class="comment-input" maxlength="300" placeholder="コメントを入力"><button class="comment-send" type="button">送信</button></div>';
+  row.querySelector('.feed-title').textContent=p.displayName||'メンバー';
+  row.querySelector('.feed-meta').textContent=(p.date||'')+' ・ '+filled+'/4項目';
+  row.querySelector('.feed-full').textContent='Plan：'+(p.plan||'（未記入）')+'\nDo：'+(p.do||'（未記入）')+'\nCheck：'+(p.check||'（未記入）')+'\nAct：'+(p.act||'（未記入）');
+  const list=row.querySelector('.comment-list');
+  async function loadComments(){
+    list.innerHTML=''; const comments=await window.firebaseBridge.listComments(currentTeam.id,p.id);
+    comments.forEach(c=>{const el=document.createElement('div');el.className='comment-row';el.innerHTML='<span class="comment-author"></span>：<span class="comment-text"></span>';el.querySelector('.comment-author').textContent=c.displayName||'メンバー';el.querySelector('.comment-text').textContent=c.text||'';list.appendChild(el)});
+  }
+  try{await loadComments()}catch(e){console.error(e)}
+  row.querySelector('.comment-send').addEventListener('click',async()=>{const input=row.querySelector('.comment-input');const text=input.value.trim();if(!text)return;try{await window.firebaseBridge.addComment(currentTeam.id,p.id,text);input.value='';await loadComments();showToast('コメントしました')}catch(e){console.error(e);showToast('コメントに失敗しました')}});
+  feed.appendChild(row);
+}
+
 async function refreshTeamData(){
   if(!window.firebaseBridge?.user){ resetTeamUI(); return; }
   try{
@@ -843,9 +885,16 @@ async function refreshTeamData(){
     const members=await window.firebaseBridge.listMembers(currentTeam.id); const ml=document.getElementById('memberList'); ml.innerHTML='';
     members.forEach(m=>{const row=document.createElement('div');row.className='member-row';row.innerHTML='<div class="member-name"></div><div class="member-email"></div>';row.querySelector('.member-name').textContent=(m.displayName||'名前未設定')+(m.role==='owner'?'（管理者）':'');row.querySelector('.member-email').textContent=m.email||'';ml.appendChild(row)});
     if(!members.length) ml.innerHTML='<div class="team-empty">メンバー情報がありません</div>';
-    const items=await window.firebaseBridge.listTeamPdcas(currentTeam.id); const feed=document.getElementById('teamFeed');feed.innerHTML='';
-    items.forEach(p=>{const row=document.createElement('div');row.className='feed-row';row.innerHTML='<div class="feed-title"></div><div class="feed-meta"></div><div class="feed-preview"></div>';row.querySelector('.feed-title').textContent=p.displayName||'メンバー';row.querySelector('.feed-meta').textContent=(p.date||'')+' ・ '+([p.plan,p.do,p.check,p.act].filter(x=>(x||'').trim()).length)+'/4項目';row.querySelector('.feed-preview').textContent=(p.act||p.check||p.do||p.plan||'（未記入）').slice(0,180);feed.appendChild(row)});
-    if(!items.length) feed.innerHTML='<div class="team-empty">まだチーム共有されたPDCAはありません</div>';
+    const filter=document.getElementById('teamDateFilter'); if(!filter.value) filter.value=todayStr();
+    const items=await window.firebaseBridge.listTeamPdcasByDate(currentTeam.id,filter.value);
+    const submittedIds=new Set(items.map(x=>x.uid)); const missing=members.filter(m=>!submittedIds.has(m.uid));
+    document.getElementById('submittedCount').textContent=String(submittedIds.size);
+    document.getElementById('missingCount').textContent=String(missing.length);
+    document.getElementById('submissionRate').textContent=members.length?Math.round(submittedIds.size/members.length*100)+'%':'0%';
+    document.getElementById('missingList').textContent=missing.length?'未提出：'+missing.map(m=>m.displayName||m.email||'名前未設定').join('、'):'全員提出済みです';
+    const feed=document.getElementById('teamFeed');feed.innerHTML='';
+    for(const p of items){await renderPdcaFeedItem(feed,p)}
+    if(!items.length) feed.innerHTML='<div class="team-empty">この日の共有PDCAはありません</div>';
   }catch(e){console.error(e); showToast('チーム情報の読込に失敗しました');}
 }
 document.getElementById('createTeamBtn').addEventListener('click',()=>toggleTeamPanel('createTeamPanel'));
@@ -855,6 +904,7 @@ document.getElementById('confirmCreateTeam').addEventListener('click',async()=>{
 document.getElementById('confirmJoinTeam').addEventListener('click',async()=>{const code=document.getElementById('inviteCodeInput').value.trim();if(!code){showToast('招待コードを入力してください');return;}try{currentTeam=await window.firebaseBridge.joinTeam(code);document.getElementById('inviteCodeInput').value='';await refreshTeamData();showToast('チームに参加しました');}catch(e){console.error(e);showToast(e.message==='team-not-found'?'招待コードが見つかりません':'参加に失敗しました')}});
 document.getElementById('copyInviteBtn').addEventListener('click',async()=>{if(!currentTeam)return;await navigator.clipboard.writeText(currentTeam.inviteCode);showToast('招待コードをコピーしました')});
 document.getElementById('leaveTeamBtn').addEventListener('click',async()=>{if(!currentTeam||!confirm('このチームから退出しますか？'))return;try{await window.firebaseBridge.leaveTeam(currentTeam.id);resetTeamUI();showToast('チームから退出しました')}catch(e){console.error(e);showToast('退出に失敗しました')}});
+document.getElementById('teamDateFilter').addEventListener('change',()=>refreshTeamData());
 
 function updateAuthUI(user){
   const name = document.getElementById('authName');
