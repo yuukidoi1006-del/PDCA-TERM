@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pdca-team-v2';
-const APP_SHELL = ['./', './index.html', './manifest.json'];
+const CACHE_NAME = 'pdca-team-v3-fixed-20260731';
+const APP_SHELL = ['./manifest.json'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));
@@ -8,18 +8,39 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+    caches.keys().then(keys => Promise.all(
+      keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+    ))
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
+  const isPage = event.request.mode === 'navigate' ||
+    event.request.destination === 'document' ||
+    new URL(event.request.url).pathname.endsWith('/index.html');
+
+  if (isPage) {
+    // HTMLは常にネットワーク優先。更新が即時反映されるようにする。
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copy));
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       const copy = response.clone();
       caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
       return response;
-    }).catch(() => caches.match('./index.html')))
+    }))
   );
 });
