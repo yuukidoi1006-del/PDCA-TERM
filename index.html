@@ -266,6 +266,45 @@ body{
 .kpt-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}.kpt-empty{font-size:13px;color:var(--secondary-label);padding:4px 0}.kpt-item{border:1px solid #ECECF2;border-radius:12px;padding:11px;background:#FAFAFB}.kpt-item-top{display:flex;align-items:center;gap:7px}.kpt-time{font-size:11px;color:var(--secondary-label);margin-left:auto}.priority-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px}.priority-high{background:#FFE5E5;color:#B42318}.priority-medium{background:#FFF1D6;color:#8A5700}.priority-low{background:#E8F4FF;color:#1E5A8A}.kpt-status{font-size:10px;font-weight:700;color:#6E6E73}.kpt-line{font-size:12px;line-height:1.5;margin-top:6px;white-space:pre-wrap}.kpt-line b{color:#26234F}.kpt-item-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.kpt-item-actions button{border:0;border-radius:8px;padding:7px 9px;font-size:11px;font-weight:700;cursor:pointer}.kpt-to-pdca{background:#E9E8FB;color:#514C87}.kpt-done{background:#E8F8ED;color:#237A3B}.kpt-delete{background:#FFE9E9;color:#C62828}.kpt-item.done{opacity:.65}.kpt-item.done .kpt-line{text-decoration:line-through}
 @media(max-width:420px){.kpt-row{grid-template-columns:1fr}}
 
+
+/* ---------- KPT library v2.1 ---------- */
+.kpt-meta-box{border:1px solid #ECECF2;border-radius:12px;padding:10px;background:#FAFAFB}
+.kpt-meta-title{font-size:12px;font-weight:800;color:#26234F;margin-bottom:8px}
+.kpt-meta-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpt-dimensions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.kpt-dimensions label{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #E4E4EA;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:700;color:#514C87}
+.kpt-dimensions input{width:15px;height:15px}
+.meta-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.meta-chip{font-size:10px;font-weight:800;border-radius:999px;padding:4px 7px;background:#EDECFB;color:#514C87}
+.meta-chip.tag{background:#E8F4FF;color:#1E5A8A}
+.kpt-library{margin:18px 16px 0;background:var(--card);border-radius:var(--radius-md);padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.library-head{display:flex;align-items:flex-start;gap:10px}
+.library-copy{flex:1}.library-title{font-size:16px;font-weight:800}.library-sub{font-size:12px;color:var(--secondary-label);line-height:1.45;margin-top:3px}
+.library-controls{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:7px;margin-top:12px}
+.library-controls input,.library-controls select{width:100%;border:1px solid var(--separator);border-radius:9px;padding:9px;font:inherit;font-size:12px;background:#FAFAFB}
+.library-summary{font-size:11px;color:var(--secondary-label);margin:10px 1px 6px}
+.library-list{display:flex;flex-direction:column;gap:8px}
+.library-item{border:1px solid #ECECF2;border-radius:12px;padding:11px;background:#FAFAFB}
+.library-item-head{display:flex;gap:7px;align-items:center}
+.library-kind{font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px}
+.library-kind.keep{background:#E8F8ED;color:#237A3B}.library-kind.problem{background:#FFE9E9;color:#C62828}.library-kind.try{background:#E8F4FF;color:#1E5A8A}
+.library-date{font-size:11px;color:var(--secondary-label);margin-left:auto}
+.library-text{font-size:13px;line-height:1.5;white-space:pre-wrap;margin-top:7px}
+.library-actions{display:flex;gap:6px;margin-top:9px}
+.library-actions button{border:0;border-radius:8px;padding:7px 9px;font-size:11px;font-weight:800;cursor:pointer}
+.library-edit{background:#E9E8FB;color:#514C87}.library-delete{background:#FFE9E9;color:#C62828}
+.library-empty{font-size:13px;color:var(--secondary-label);padding:8px 0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:1000;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal-card{width:min(520px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:16px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal-title{font-size:17px;font-weight:900;margin-bottom:12px}.modal-grid{display:grid;gap:10px}
+.modal-field label{display:block;font-size:11px;font-weight:800;color:var(--secondary-label);margin:0 2px 5px}
+.modal-field textarea,.modal-field select,.modal-field input{width:100%;border:1px solid var(--separator);border-radius:10px;padding:10px;font:inherit;background:#FAFAFB}
+.modal-field textarea{min-height:90px;resize:vertical}.modal-actions{display:flex;gap:8px;margin-top:14px}
+.modal-actions button{flex:1;border:0;border-radius:10px;padding:11px;font-size:13px;font-weight:800;cursor:pointer}
+.modal-save{background:#26234F;color:#fff}.modal-cancel{background:#ECECF2;color:#26234F}
+@media(max-width:600px){.library-controls{grid-template-columns:1fr 1fr}.kpt-meta-row{grid-template-columns:1fr}}
+
 /* ---------- Phase 2 team sharing ---------- */
 .team-card{margin:0 16px 14px;background:var(--card);border-radius:var(--radius-md);padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .team-head{display:flex;align-items:center;gap:10px}.team-copy{flex:1;min-width:0}.team-title{font-size:15px;font-weight:700}.team-sub{font-size:12px;color:var(--secondary-label);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -362,24 +401,83 @@ body{
     <div class="kpt-head">
       <div class="kpt-head-copy">
         <div class="kpt-title">KPT クイック記録</div>
-        <div class="kpt-sub">気づいた時に記録。Problemには優先度を付け、TryをPDCAへつなげます。</div>
+        <div class="kpt-sub">気づいた時に記録。タグと「考え方・熱量・スキル」で分類し、TryをPDCAへつなげます。</div>
       </div>
       <button class="kpt-toggle" id="kptToggle" type="button">＋追加</button>
     </div>
     <div class="kpt-form" id="kptForm">
       <div class="kpt-grid">
         <div class="kpt-field"><label for="kptKeep">Keep（続けること）</label><textarea id="kptKeep" placeholder="うまくいったこと、継続したいこと"></textarea></div>
-        <div class="kpt-field"><label for="kptProblem">Problem（課題）</label><textarea id="kptProblem" placeholder="困ったこと、改善したい課題"></textarea></div>
-        <div class="kpt-row">
-          <div class="kpt-field"><label for="kptPriority">課題の優先度</label><select id="kptPriority"><option value="high">高</option><option value="medium" selected>中</option><option value="low">低</option></select></div>
-          <div class="kpt-field"><label for="kptTargetDate">Tryの実行日</label><input id="kptTargetDate" type="date"></div>
+        <div class="kpt-meta-box">
+          <div class="kpt-meta-title">Keepの分類</div>
+          <div class="kpt-meta-row"><div class="kpt-field"><label for="kptKeepTag">タグ</label><select id="kptKeepTag"></select></div></div>
+          <div class="kpt-dimensions" data-meta-kind="keep">
+            <label><input type="checkbox" value="mindset">考え方</label><label><input type="checkbox" value="energy">熱量</label><label><input type="checkbox" value="skill">スキル</label>
+          </div>
         </div>
+
+        <div class="kpt-field"><label for="kptProblem">Problem（課題）</label><textarea id="kptProblem" placeholder="困ったこと、改善したい課題"></textarea></div>
+        <div class="kpt-meta-box">
+          <div class="kpt-meta-title">Problemの分類</div>
+          <div class="kpt-meta-row">
+            <div class="kpt-field"><label for="kptProblemTag">タグ</label><select id="kptProblemTag"></select></div>
+            <div class="kpt-field"><label for="kptPriority">課題の優先度</label><select id="kptPriority"><option value="high">高</option><option value="medium" selected>中</option><option value="low">低</option></select></div>
+          </div>
+          <div class="kpt-dimensions" data-meta-kind="problem">
+            <label><input type="checkbox" value="mindset">考え方</label><label><input type="checkbox" value="energy">熱量</label><label><input type="checkbox" value="skill">スキル</label>
+          </div>
+        </div>
+
         <div class="kpt-field"><label for="kptTry">Try（次に試すこと）</label><textarea id="kptTry" placeholder="次に試す改善策・ToDo"></textarea></div>
+        <div class="kpt-meta-box">
+          <div class="kpt-meta-title">Tryの分類</div>
+          <div class="kpt-meta-row">
+            <div class="kpt-field"><label for="kptTryTag">タグ</label><select id="kptTryTag"></select></div>
+            <div class="kpt-field"><label for="kptTargetDate">Tryの実行日</label><input id="kptTargetDate" type="date"></div>
+          </div>
+          <div class="kpt-dimensions" data-meta-kind="try">
+            <label><input type="checkbox" value="mindset">考え方</label><label><input type="checkbox" value="energy">熱量</label><label><input type="checkbox" value="skill">スキル</label>
+          </div>
+        </div>
       </div>
       <label class="kpt-check"><input id="kptAutoPlan" type="checkbox" checked>Tryを実行日のPlanへ自動反映する</label>
       <button class="kpt-save" id="kptSave" type="button">KPTを記録</button>
     </div>
     <div class="kpt-list" id="kptList"></div>
+  </div>
+
+  <div class="kpt-library" id="kptLibrary">
+    <div class="library-head">
+      <div class="library-copy">
+        <div class="library-title">KPTライブラリ</div>
+        <div class="library-sub">これまでのK・P・Tを横断して検索・分類・修正できます。KeepがProblemになった場合も種類を変更できます。</div>
+      </div>
+    </div>
+    <div class="library-controls">
+      <input id="librarySearch" type="search" placeholder="キーワード検索">
+      <select id="libraryType"><option value="">K/P/Tすべて</option><option value="keep">Keep</option><option value="problem">Problem</option><option value="try">Try</option></select>
+      <select id="libraryTag"><option value="">タグすべて</option></select>
+      <select id="libraryDimension"><option value="">3項目すべて</option><option value="mindset">考え方</option><option value="energy">熱量</option><option value="skill">スキル</option></select>
+    </div>
+    <div class="library-summary" id="librarySummary"></div>
+    <div class="library-list" id="libraryList"></div>
+  </div>
+
+  <div class="modal-backdrop" id="libraryEditModal" role="dialog" aria-modal="true" aria-labelledby="libraryEditTitle">
+    <div class="modal-card">
+      <div class="modal-title" id="libraryEditTitle">KPTを編集・種類変更</div>
+      <div class="modal-grid">
+        <div class="modal-field"><label for="editLibraryType">種類</label><select id="editLibraryType"><option value="keep">Keep</option><option value="problem">Problem</option><option value="try">Try</option></select></div>
+        <div class="modal-field"><label for="editLibraryText">内容</label><textarea id="editLibraryText"></textarea></div>
+        <div class="modal-field"><label for="editLibraryTag">タグ</label><select id="editLibraryTag"></select></div>
+        <div class="kpt-dimensions" id="editLibraryDimensions">
+          <label><input type="checkbox" value="mindset">考え方</label><label><input type="checkbox" value="energy">熱量</label><label><input type="checkbox" value="skill">スキル</label>
+        </div>
+        <div class="modal-field" id="editPriorityWrap"><label for="editLibraryPriority">Problemの優先度</label><select id="editLibraryPriority"><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></div>
+        <div class="modal-field" id="editTargetDateWrap"><label for="editLibraryTargetDate">Tryの実行日</label><input id="editLibraryTargetDate" type="date"></div>
+      </div>
+      <div class="modal-actions"><button class="modal-cancel" id="editLibraryCancel" type="button">キャンセル</button><button class="modal-save" id="editLibrarySave" type="button">保存</button></div>
+    </div>
   </div>
 
   <div class="section">
@@ -600,6 +698,7 @@ async function loadData(){
       const cloud = await window.firebaseBridge.loadCloud();
       if(cloud && cloud.entries){
         state = { entries: cloud.entries, kptEntries: Array.isArray(cloud.kptEntries) ? cloud.kptEntries : [] };
+        state.kptEntries.forEach(ensureKptMeta);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       }
     }
@@ -620,6 +719,134 @@ async function persist(){
   }
 }
 
+
+
+const KPT_TAGS=['営業','人間関係','自己管理','メンタル','マネジメント','教育'];
+const KPT_DIMENSIONS={mindset:'考え方',energy:'熱量',skill:'スキル'};
+const KPT_TYPE_FIELDS={keep:'keep',problem:'problem',try:'tryText'};
+
+function tagOptionsHtml(selected=''){
+  return KPT_TAGS.map(tag=>`<option value="${escapeHtml(tag)}"${tag===selected?' selected':''}>${escapeHtml(tag)}</option>`).join('');
+}
+function initKptMetadataUI(){
+  ['kptKeepTag','kptProblemTag','kptTryTag','editLibraryTag'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.innerHTML=tagOptionsHtml(el.value||'営業');
+  });
+  const filter=document.getElementById('libraryTag');
+  if(filter) filter.innerHTML='<option value="">タグすべて</option>'+tagOptionsHtml('');
+}
+function selectedDimensions(container){
+  return [...container.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value);
+}
+function setSelectedDimensions(container,values=[]){
+  const set=new Set(values||[]);
+  container.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=set.has(x.value));
+}
+function getEntryMeta(item,type){
+  const legacyTag=item.tag||'営業';
+  const legacyDimensions=Array.isArray(item.dimensions)?item.dimensions:[];
+  return {...(item.meta?.[type]||{}),tag:item.meta?.[type]?.tag||legacyTag,dimensions:Array.isArray(item.meta?.[type]?.dimensions)?item.meta[type].dimensions:legacyDimensions};
+}
+function ensureKptMeta(item){
+  item.meta=item.meta||{};
+  ['keep','problem','try'].forEach(type=>{
+    const field=KPT_TYPE_FIELDS[type];
+    if(item[field] && !item.meta[type]) item.meta[type]={tag:item.tag||'営業',dimensions:Array.isArray(item.dimensions)?item.dimensions:[]};
+  });
+  return item;
+}
+function metaChipsHtml(meta){
+  const chips=[`<span class="meta-chip tag">${escapeHtml(meta.tag||'営業')}</span>`];
+  (meta.dimensions||[]).forEach(d=>chips.push(`<span class="meta-chip">${escapeHtml(KPT_DIMENSIONS[d]||d)}</span>`));
+  return `<div class="meta-chips">${chips.join('')}</div>`;
+}
+function clearKptMetaInputs(){
+  ['keep','problem','try'].forEach(type=>{
+    const c=document.querySelector(`.kpt-dimensions[data-meta-kind="${type}"]`); if(c) setSelectedDimensions(c,[]);
+  });
+  ['kptKeepTag','kptProblemTag','kptTryTag'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='営業';});
+}
+function flattenKptLibrary(){
+  const rows=[];
+  (state.kptEntries||[]).forEach(item=>{
+    ensureKptMeta(item);
+    ['keep','problem','try'].forEach(type=>{
+      const field=KPT_TYPE_FIELDS[type],text=(item[field]||'').trim();
+      if(text) rows.push({item,type,text,meta:getEntryMeta(item,type),date:item.date,createdAt:item.createdAt||0});
+    });
+  });
+  return rows.sort((a,b)=>(b.createdAt-a.createdAt)||String(b.date).localeCompare(String(a.date)));
+}
+let editingLibraryRef=null;
+function updateLibraryModalConditional(){
+  const type=document.getElementById('editLibraryType').value;
+  document.getElementById('editPriorityWrap').style.display=type==='problem'?'block':'none';
+  document.getElementById('editTargetDateWrap').style.display=type==='try'?'block':'none';
+}
+function openLibraryEditor(row){
+  editingLibraryRef={itemId:row.item.id,originalType:row.type};
+  document.getElementById('editLibraryType').value=row.type;
+  document.getElementById('editLibraryText').value=row.text;
+  document.getElementById('editLibraryTag').value=row.meta.tag||'営業';
+  setSelectedDimensions(document.getElementById('editLibraryDimensions'),row.meta.dimensions||[]);
+  document.getElementById('editLibraryPriority').value=row.item.priority||'medium';
+  document.getElementById('editLibraryTargetDate').value=row.item.targetDate||addDays(row.item.date||currentDate,1);
+  updateLibraryModalConditional();
+  document.getElementById('libraryEditModal').classList.add('show');
+}
+function closeLibraryEditor(){
+  editingLibraryRef=null;document.getElementById('libraryEditModal').classList.remove('show');
+}
+async function saveLibraryEdit(){
+  if(!editingLibraryRef)return;
+  const item=(state.kptEntries||[]).find(x=>x.id===editingLibraryRef.itemId);if(!item)return closeLibraryEditor();
+  ensureKptMeta(item);
+  const oldType=editingLibraryRef.originalType,newType=document.getElementById('editLibraryType').value;
+  const text=document.getElementById('editLibraryText').value.trim();
+  if(!text){showToast('内容を入力してください');return;}
+  const oldField=KPT_TYPE_FIELDS[oldType],newField=KPT_TYPE_FIELDS[newType];
+  if(oldType!==newType){
+    item[oldField]='';
+    delete item.meta[oldType];
+    item[newField]=appendUnique(item[newField]||'',text);
+  }else item[newField]=text;
+  item.meta[newType]={tag:document.getElementById('editLibraryTag').value||'営業',dimensions:selectedDimensions(document.getElementById('editLibraryDimensions'))};
+  if(newType==='problem') item.priority=document.getElementById('editLibraryPriority').value||'medium';
+  if(newType==='try') item.targetDate=document.getElementById('editLibraryTargetDate').value||addDays(item.date||currentDate,1);
+  item.changeHistory=Array.isArray(item.changeHistory)?item.changeHistory:[];
+  item.changeHistory.push({from:oldType,to:newType,changedAt:Date.now()});
+  item.updatedAt=Date.now();
+  if(!item.keep&&!item.problem&&!item.tryText) state.kptEntries=state.kptEntries.filter(x=>x.id!==item.id);
+  await persist();closeLibraryEditor();renderKptList();renderKptLibrary();showToast(oldType===newType?'KPTを更新しました':'種類を変更しました');
+}
+async function deleteLibraryPart(row){
+  if(!confirm('この項目をライブラリから削除しますか？'))return;
+  const field=KPT_TYPE_FIELDS[row.type];row.item[field]='';if(row.item.meta)delete row.item.meta[row.type];
+  if(!row.item.keep&&!row.item.problem&&!row.item.tryText) state.kptEntries=state.kptEntries.filter(x=>x.id!==row.item.id);
+  await persist();renderKptList();renderKptLibrary();showToast('削除しました');
+}
+function renderKptLibrary(){
+  const list=document.getElementById('libraryList');if(!list)return;
+  const q=(document.getElementById('librarySearch').value||'').trim().toLowerCase();
+  const type=document.getElementById('libraryType').value;
+  const tag=document.getElementById('libraryTag').value;
+  const dim=document.getElementById('libraryDimension').value;
+  let rows=flattenKptLibrary().filter(r=>(!q||r.text.toLowerCase().includes(q))&&(!type||r.type===type)&&(!tag||r.meta.tag===tag)&&(!dim||(r.meta.dimensions||[]).includes(dim)));
+  document.getElementById('librarySummary').textContent=`表示 ${rows.length}件／全 ${flattenKptLibrary().length}件`;
+  list.innerHTML='';
+  if(!rows.length){list.innerHTML='<div class="library-empty">条件に合うKPTはありません</div>';return;}
+  rows.forEach(row=>{
+    const el=document.createElement('div');el.className='library-item';
+    const kindLabel=row.type==='keep'?'Keep':row.type==='problem'?'Problem':'Try';
+    let extra='';
+    if(row.type==='problem') extra=`<span class="priority-badge priority-${escapeHtml(row.item.priority||'medium')}">優先度 ${priorityLabel(row.item.priority)}</span>`;
+    if(row.type==='try'&&row.item.targetDate) extra+=`<span class="meta-chip">実行日 ${escapeHtml(row.item.targetDate)}</span>`;
+    el.innerHTML=`<div class="library-item-head"><span class="library-kind ${row.type}">${kindLabel}</span>${extra}<span class="library-date">${escapeHtml(row.date||'')}</span></div><div class="library-text">${escapeHtml(row.text)}</div>${metaChipsHtml(row.meta)}<div class="library-actions"><button class="library-edit" type="button">編集・種類変更</button><button class="library-delete" type="button">削除</button></div>`;
+    el.querySelector('.library-edit').addEventListener('click',()=>openLibraryEditor(row));
+    el.querySelector('.library-delete').addEventListener('click',()=>deleteLibraryPart(row));
+    list.appendChild(el);
+  });
+}
 
 function addDays(dateStr, days){
   const d = new Date(dateStr+'T00:00:00');
@@ -671,10 +898,15 @@ function renderKptList(){
     el.innerHTML='<div class="kpt-item-top"><span class="priority-badge"></span><span class="kpt-status"></span><span class="kpt-time"></span></div><div class="kpt-body"></div><div class="kpt-item-actions"><button class="kpt-to-pdca" type="button">PDCAへ反映</button><button class="kpt-done" type="button"></button><button class="kpt-delete" type="button">削除</button></div>';
     const badge=el.querySelector('.priority-badge');badge.textContent='優先度 '+priorityLabel(item.priority);badge.classList.add('priority-'+(item.priority||'medium'));
     el.querySelector('.kpt-status').textContent=item.reflectedToPdca?'PDCA反映済み':'未反映';el.querySelector('.kpt-time').textContent=time;
-    const lines=[];if(item.keep)lines.push('<div class="kpt-line"><b>K：</b>'+escapeHtml(item.keep)+'</div>');if(item.problem)lines.push('<div class="kpt-line"><b>P：</b>'+escapeHtml(item.problem)+'</div>');if(item.tryText)lines.push('<div class="kpt-line"><b>T：</b>'+escapeHtml(item.tryText)+' <span style="color:#8E8E93">('+escapeHtml(item.targetDate||'日付未設定')+')</span></div>');el.querySelector('.kpt-body').innerHTML=lines.join('');
-    el.querySelector('.kpt-to-pdca').addEventListener('click',async()=>{reflectKptToPdca(item,true);await persist();loadFieldsForCurrentDate();renderKptList();renderDayStrip();renderRing();renderHistory();showToast('KPTをPDCAへ反映しました')});
-    const done=el.querySelector('.kpt-done');done.textContent=item.status==='done'?'未完了に戻す':'完了';done.addEventListener('click',async()=>{item.status=item.status==='done'?'open':'done';await persist();renderKptList();showToast(item.status==='done'?'完了にしました':'未完了に戻しました')});
-    el.querySelector('.kpt-delete').addEventListener('click',async()=>{if(!confirm('このKPTを削除しますか？'))return;state.kptEntries=state.kptEntries.filter(x=>x.id!==item.id);await persist();renderKptList();showToast('削除しました')});
+    ensureKptMeta(item);
+    const lines=[];
+    if(item.keep){const m=getEntryMeta(item,'keep');lines.push('<div class="kpt-line"><b>K：</b>'+escapeHtml(item.keep)+metaChipsHtml(m)+'</div>');}
+    if(item.problem){const m=getEntryMeta(item,'problem');lines.push('<div class="kpt-line"><b>P：</b>'+escapeHtml(item.problem)+metaChipsHtml(m)+'</div>');}
+    if(item.tryText){const m=getEntryMeta(item,'try');lines.push('<div class="kpt-line"><b>T：</b>'+escapeHtml(item.tryText)+' <span style="color:#8E8E93">('+escapeHtml(item.targetDate||'日付未設定')+')</span>'+metaChipsHtml(m)+'</div>');}
+    el.querySelector('.kpt-body').innerHTML=lines.join('');
+    el.querySelector('.kpt-to-pdca').addEventListener('click',async()=>{reflectKptToPdca(item,true);await persist();loadFieldsForCurrentDate();renderKptList();renderKptLibrary();renderDayStrip();renderRing();renderHistory();showToast('KPTをPDCAへ反映しました')});
+    const done=el.querySelector('.kpt-done');done.textContent=item.status==='done'?'未完了に戻す':'完了';done.addEventListener('click',async()=>{item.status=item.status==='done'?'open':'done';await persist();renderKptList();renderKptLibrary();showToast(item.status==='done'?'完了にしました':'未完了に戻しました')});
+    el.querySelector('.kpt-delete').addEventListener('click',async()=>{if(!confirm('このKPTを削除しますか？'))return;state.kptEntries=state.kptEntries.filter(x=>x.id!==item.id);await persist();renderKptList();renderKptLibrary();showToast('削除しました')});
     list.appendChild(el);
   });
 }
@@ -683,14 +915,21 @@ async function saveKpt(){
   const problem=document.getElementById('kptProblem').value.trim();
   const tryText=document.getElementById('kptTry').value.trim();
   if(!keep&&!problem&&!tryText){showToast('K・P・Tのいずれかを入力してください');return;}
-  const item={id:'kpt_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),date:currentDate,createdAt:Date.now(),keep,problem,tryText,priority:document.getElementById('kptPriority').value,targetDate:document.getElementById('kptTargetDate').value||addDays(currentDate,1),status:'open',reflectedToPdca:false,reflectedToPlan:false};
+  const item={
+    id:'kpt_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),date:currentDate,createdAt:Date.now(),keep,problem,tryText,
+    priority:document.getElementById('kptPriority').value,targetDate:document.getElementById('kptTargetDate').value||addDays(currentDate,1),
+    status:'open',reflectedToPdca:false,reflectedToPlan:false,meta:{}
+  };
+  if(keep)item.meta.keep={tag:document.getElementById('kptKeepTag').value||'営業',dimensions:selectedDimensions(document.querySelector('.kpt-dimensions[data-meta-kind="keep"]'))};
+  if(problem)item.meta.problem={tag:document.getElementById('kptProblemTag').value||'営業',dimensions:selectedDimensions(document.querySelector('.kpt-dimensions[data-meta-kind="problem"]'))};
+  if(tryText)item.meta.try={tag:document.getElementById('kptTryTag').value||'営業',dimensions:selectedDimensions(document.querySelector('.kpt-dimensions[data-meta-kind="try"]'))};
   state.kptEntries.push(item);
   // K/P/Tを当日のCheck/Actへ、Tryを指定日のPlanへ落とし込む
   reflectKptToPdca(item,document.getElementById('kptAutoPlan').checked);
   await persist();
   ['kptKeep','kptProblem','kptTry'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('kptPriority').value='medium';document.getElementById('kptTargetDate').value=addDays(currentDate,1);
-  loadFieldsForCurrentDate();renderKptList();renderDayStrip();renderRing();renderHistory();
+  document.getElementById('kptPriority').value='medium';document.getElementById('kptTargetDate').value=addDays(currentDate,1);clearKptMetaInputs();
+  loadFieldsForCurrentDate();renderKptList();renderKptLibrary();renderDayStrip();renderRing();renderHistory();
   showToast('KPTを記録し、PDCAへ反映しました');
 }
 
@@ -878,6 +1117,7 @@ function selectDate(dateStr){
   loadFieldsForCurrentDate();
   setDefaultKptTarget();
   renderKptList();
+  renderKptLibrary();
   renderDayStrip();
   renderRing();
 }
@@ -1030,7 +1270,16 @@ document.getElementById('kptToggle').addEventListener('click',()=>{
   document.getElementById('kptToggle').textContent=form.classList.contains('show')?'閉じる':'＋追加';
   setDefaultKptTarget();
 });
+
 document.getElementById('kptSave').addEventListener('click',saveKpt);
+['librarySearch','libraryType','libraryTag','libraryDimension'].forEach(id=>{
+  const el=document.getElementById(id);if(el)el.addEventListener(id==='librarySearch'?'input':'change',renderKptLibrary);
+});
+document.getElementById('editLibraryType').addEventListener('change',updateLibraryModalConditional);
+document.getElementById('editLibraryCancel').addEventListener('click',closeLibraryEditor);
+document.getElementById('editLibrarySave').addEventListener('click',saveLibraryEdit);
+document.getElementById('libraryEditModal').addEventListener('click',e=>{if(e.target.id==='libraryEditModal')closeLibraryEditor();});
+
 
 function updateAuthUI(user){
   const name = document.getElementById('authName');
@@ -1103,6 +1352,10 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(()=>{});
   });
 }
+
+initKptMetadataUI();
+(state.kptEntries||[]).forEach(ensureKptMeta);
+renderKptLibrary();
 </script>
 </body>
 </html>
