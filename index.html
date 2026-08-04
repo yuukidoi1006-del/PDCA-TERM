@@ -258,6 +258,14 @@ body{
 .auth-copy{min-width:0;flex:1}.auth-name{font-size:14px;font-weight:700;color:var(--label);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.auth-status{font-size:12px;color:var(--secondary-label);margin-top:2px}
 .auth-btn{border:0;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer;background:#26234F;color:#fff;white-space:nowrap}.auth-btn.secondary{background:#ECECF2;color:#26234F}.auth-btn:disabled{opacity:.55;cursor:default}
 
+
+/* ---------- KPT quick log ---------- */
+.kpt-card{margin:18px 16px 0;background:var(--card);border-radius:var(--radius-md);padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.kpt-head{display:flex;align-items:flex-start;gap:10px}.kpt-head-copy{flex:1}.kpt-title{font-size:16px;font-weight:800}.kpt-sub{font-size:12px;color:var(--secondary-label);line-height:1.45;margin-top:3px}.kpt-toggle{border:0;border-radius:10px;background:#ECECF2;color:#26234F;padding:8px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.kpt-form{display:none;margin-top:12px;padding-top:12px;border-top:.5px solid var(--separator)}.kpt-form.show{display:block}.kpt-grid{display:grid;gap:9px}.kpt-field label{display:block;font-size:11px;font-weight:700;color:var(--secondary-label);margin:0 2px 5px}.kpt-field textarea,.kpt-field input,.kpt-field select{width:100%;border:1px solid var(--separator);border-radius:10px;padding:10px 11px;font:inherit;font-size:14px;background:#FAFAFB;color:var(--label)}.kpt-field textarea{min-height:58px;resize:vertical}.kpt-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kpt-check{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--secondary-label);margin-top:9px}.kpt-check input{width:17px;height:17px}.kpt-save{width:100%;border:0;border-radius:11px;background:#26234F;color:#fff;padding:11px;font-size:14px;font-weight:800;margin-top:10px;cursor:pointer}
+.kpt-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}.kpt-empty{font-size:13px;color:var(--secondary-label);padding:4px 0}.kpt-item{border:1px solid #ECECF2;border-radius:12px;padding:11px;background:#FAFAFB}.kpt-item-top{display:flex;align-items:center;gap:7px}.kpt-time{font-size:11px;color:var(--secondary-label);margin-left:auto}.priority-badge{font-size:10px;font-weight:800;padding:4px 7px;border-radius:999px}.priority-high{background:#FFE5E5;color:#B42318}.priority-medium{background:#FFF1D6;color:#8A5700}.priority-low{background:#E8F4FF;color:#1E5A8A}.kpt-status{font-size:10px;font-weight:700;color:#6E6E73}.kpt-line{font-size:12px;line-height:1.5;margin-top:6px;white-space:pre-wrap}.kpt-line b{color:#26234F}.kpt-item-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.kpt-item-actions button{border:0;border-radius:8px;padding:7px 9px;font-size:11px;font-weight:700;cursor:pointer}.kpt-to-pdca{background:#E9E8FB;color:#514C87}.kpt-done{background:#E8F8ED;color:#237A3B}.kpt-delete{background:#FFE9E9;color:#C62828}.kpt-item.done{opacity:.65}.kpt-item.done .kpt-line{text-decoration:line-through}
+@media(max-width:420px){.kpt-row{grid-template-columns:1fr}}
+
 /* ---------- Phase 2 team sharing ---------- */
 .team-card{margin:0 16px 14px;background:var(--card);border-radius:var(--radius-md);padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .team-head{display:flex;align-items:center;gap:10px}.team-copy{flex:1;min-width:0}.team-title{font-size:15px;font-weight:700}.team-sub{font-size:12px;color:var(--secondary-label);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -274,7 +282,7 @@ body{
 
   <div class="navbar">
     <div class="large-title">PDCA</div>
-    <div class="subtitle">日々のサイクルを記録する</div>
+    <div class="subtitle">PDCAとKPTで課題・ToDoを一括管理する</div>
   </div>
 
 
@@ -348,6 +356,30 @@ body{
     <div class="date-jump">
       <input type="date" id="datePicker">
     </div>
+  </div>
+
+  <div class="kpt-card" id="kptCard">
+    <div class="kpt-head">
+      <div class="kpt-head-copy">
+        <div class="kpt-title">KPT クイック記録</div>
+        <div class="kpt-sub">気づいた時に記録。Problemには優先度を付け、TryをPDCAへつなげます。</div>
+      </div>
+      <button class="kpt-toggle" id="kptToggle" type="button">＋追加</button>
+    </div>
+    <div class="kpt-form" id="kptForm">
+      <div class="kpt-grid">
+        <div class="kpt-field"><label for="kptKeep">Keep（続けること）</label><textarea id="kptKeep" placeholder="うまくいったこと、継続したいこと"></textarea></div>
+        <div class="kpt-field"><label for="kptProblem">Problem（課題）</label><textarea id="kptProblem" placeholder="困ったこと、改善したい課題"></textarea></div>
+        <div class="kpt-row">
+          <div class="kpt-field"><label for="kptPriority">課題の優先度</label><select id="kptPriority"><option value="high">高</option><option value="medium" selected>中</option><option value="low">低</option></select></div>
+          <div class="kpt-field"><label for="kptTargetDate">Tryの実行日</label><input id="kptTargetDate" type="date"></div>
+        </div>
+        <div class="kpt-field"><label for="kptTry">Try（次に試すこと）</label><textarea id="kptTry" placeholder="次に試す改善策・ToDo"></textarea></div>
+      </div>
+      <label class="kpt-check"><input id="kptAutoPlan" type="checkbox" checked>Tryを実行日のPlanへ自動反映する</label>
+      <button class="kpt-save" id="kptSave" type="button">KPTを記録</button>
+    </div>
+    <div class="kpt-list" id="kptList"></div>
   </div>
 
   <div class="section">
@@ -456,7 +488,7 @@ window.firebaseBridge = {
   async saveCloud(data){
     if(!currentUser) return;
     await setDoc(doc(db, "users", currentUser.uid), {
-      entries: data.entries || {}, displayName: currentUser.displayName || "", email: currentUser.email || "", photoURL: currentUser.photoURL || "", updatedAt: serverTimestamp()
+      entries: data.entries || {}, kptEntries: data.kptEntries || [], displayName: currentUser.displayName || "", email: currentUser.email || "", photoURL: currentUser.photoURL || "", updatedAt: serverTimestamp()
     }, { merge: true });
   },
   async getMyTeam(){
@@ -526,7 +558,7 @@ onAuthStateChanged(auth, user => {
 
 <script>
 const STORAGE_KEY = 'pdca-data';
-let state = { entries: {} };
+let state = { entries: {}, kptEntries: [] };
 let currentTeam = null;
 let currentDate = todayStr();
 const FIELD_IDS = { plan:'planInput', do:'doInput', check:'checkInput', act:'actInput' };
@@ -556,9 +588,10 @@ async function loadData(){
     if(raw){
       state = JSON.parse(raw);
       if(!state.entries) state.entries = {};
+      if(!Array.isArray(state.kptEntries)) state.kptEntries = [];
     }
   }catch(e){
-    state = { entries: {} };
+    state = { entries: {}, kptEntries: [] };
   }
 
   try{
@@ -566,7 +599,7 @@ async function loadData(){
       await window.firebaseBridge.authReady;
       const cloud = await window.firebaseBridge.loadCloud();
       if(cloud && cloud.entries){
-        state = { entries: cloud.entries };
+        state = { entries: cloud.entries, kptEntries: Array.isArray(cloud.kptEntries) ? cloud.kptEntries : [] };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       }
     }
@@ -585,6 +618,80 @@ async function persist(){
     console.error('storage save failed', e);
     throw e;
   }
+}
+
+
+function addDays(dateStr, days){
+  const d = new Date(dateStr+'T00:00:00');
+  d.setDate(d.getDate()+days);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function priorityLabel(priority){ return priority==='high'?'高':priority==='low'?'低':'中'; }
+function priorityRank(priority){ return priority==='high'?0:priority==='medium'?1:2; }
+function appendUnique(base, line){
+  const clean=(line||'').trim(); if(!clean) return base||'';
+  const current=(base||'').trim();
+  if(current.includes(clean)) return current;
+  return current ? current+'\n'+clean : clean;
+}
+function kptPlanLine(item){
+  return `・ [KPT/${priorityLabel(item.priority)}] ${item.tryText}`;
+}
+function reflectKptToPdca(item, includePlan=true){
+  const sourceDate=item.date || currentDate;
+  if(!state.entries[sourceDate]) state.entries[sourceDate]={plan:'',do:'',check:'',act:'',modes:{plan:'bullet',do:'text',check:'bullet',act:'bullet'}};
+  const source=state.entries[sourceDate];
+  if(item.keep) source.check=appendUnique(source.check,`・ [KPT Keep] ${item.keep}`);
+  if(item.problem) source.check=appendUnique(source.check,`・ [KPT Problem/優先度${priorityLabel(item.priority)}] ${item.problem}`);
+  if(item.tryText) source.act=appendUnique(source.act,`・ [KPT Try] ${item.tryText}`);
+  source.updatedAt=Date.now();
+  source.modes={...(source.modes||{}),check:'bullet',act:'bullet'};
+  if(includePlan && item.tryText){
+    const target=item.targetDate || addDays(sourceDate,1);
+    if(!state.entries[target]) state.entries[target]={plan:'',do:'',check:'',act:'',modes:{plan:'bullet',do:'text',check:'text',act:'text'}};
+    state.entries[target].plan=appendUnique(state.entries[target].plan,kptPlanLine(item));
+    state.entries[target].updatedAt=Date.now();
+    state.entries[target].modes={...(state.entries[target].modes||{}),plan:'bullet'};
+    item.reflectedToPlan=true;
+  }
+  item.reflectedToPdca=true;
+}
+function setDefaultKptTarget(){
+  const input=document.getElementById('kptTargetDate');
+  if(input && !input.value) input.value=addDays(currentDate,1);
+}
+function renderKptList(){
+  const list=document.getElementById('kptList'); if(!list) return;
+  const items=(state.kptEntries||[]).filter(x=>x.date===currentDate).sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)||(b.createdAt||0)-(a.createdAt||0));
+  list.innerHTML='';
+  if(!items.length){list.innerHTML='<div class="kpt-empty">この日のKPTはまだありません</div>';return;}
+  items.forEach(item=>{
+    const el=document.createElement('div');el.className='kpt-item'+(item.status==='done'?' done':'');
+    const time=item.createdAt?new Date(item.createdAt).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}):'';
+    el.innerHTML='<div class="kpt-item-top"><span class="priority-badge"></span><span class="kpt-status"></span><span class="kpt-time"></span></div><div class="kpt-body"></div><div class="kpt-item-actions"><button class="kpt-to-pdca" type="button">PDCAへ反映</button><button class="kpt-done" type="button"></button><button class="kpt-delete" type="button">削除</button></div>';
+    const badge=el.querySelector('.priority-badge');badge.textContent='優先度 '+priorityLabel(item.priority);badge.classList.add('priority-'+(item.priority||'medium'));
+    el.querySelector('.kpt-status').textContent=item.reflectedToPdca?'PDCA反映済み':'未反映';el.querySelector('.kpt-time').textContent=time;
+    const lines=[];if(item.keep)lines.push('<div class="kpt-line"><b>K：</b>'+escapeHtml(item.keep)+'</div>');if(item.problem)lines.push('<div class="kpt-line"><b>P：</b>'+escapeHtml(item.problem)+'</div>');if(item.tryText)lines.push('<div class="kpt-line"><b>T：</b>'+escapeHtml(item.tryText)+' <span style="color:#8E8E93">('+escapeHtml(item.targetDate||'日付未設定')+')</span></div>');el.querySelector('.kpt-body').innerHTML=lines.join('');
+    el.querySelector('.kpt-to-pdca').addEventListener('click',async()=>{reflectKptToPdca(item,true);await persist();loadFieldsForCurrentDate();renderKptList();renderDayStrip();renderRing();renderHistory();showToast('KPTをPDCAへ反映しました')});
+    const done=el.querySelector('.kpt-done');done.textContent=item.status==='done'?'未完了に戻す':'完了';done.addEventListener('click',async()=>{item.status=item.status==='done'?'open':'done';await persist();renderKptList();showToast(item.status==='done'?'完了にしました':'未完了に戻しました')});
+    el.querySelector('.kpt-delete').addEventListener('click',async()=>{if(!confirm('このKPTを削除しますか？'))return;state.kptEntries=state.kptEntries.filter(x=>x.id!==item.id);await persist();renderKptList();showToast('削除しました')});
+    list.appendChild(el);
+  });
+}
+async function saveKpt(){
+  const keep=document.getElementById('kptKeep').value.trim();
+  const problem=document.getElementById('kptProblem').value.trim();
+  const tryText=document.getElementById('kptTry').value.trim();
+  if(!keep&&!problem&&!tryText){showToast('K・P・Tのいずれかを入力してください');return;}
+  const item={id:'kpt_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),date:currentDate,createdAt:Date.now(),keep,problem,tryText,priority:document.getElementById('kptPriority').value,targetDate:document.getElementById('kptTargetDate').value||addDays(currentDate,1),status:'open',reflectedToPdca:false,reflectedToPlan:false};
+  state.kptEntries.push(item);
+  // K/P/Tを当日のCheck/Actへ、Tryを指定日のPlanへ落とし込む
+  reflectKptToPdca(item,document.getElementById('kptAutoPlan').checked);
+  await persist();
+  ['kptKeep','kptProblem','kptTry'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('kptPriority').value='medium';document.getElementById('kptTargetDate').value=addDays(currentDate,1);
+  loadFieldsForCurrentDate();renderKptList();renderDayStrip();renderRing();renderHistory();
+  showToast('KPTを記録し、PDCAへ反映しました');
 }
 
 function getLatestAction(){
@@ -769,6 +876,8 @@ function renderHistory(){
 function selectDate(dateStr){
   currentDate = dateStr;
   loadFieldsForCurrentDate();
+  setDefaultKptTarget();
+  renderKptList();
   renderDayStrip();
   renderRing();
 }
@@ -817,6 +926,15 @@ function buildShareText(){
     lines.push((entry[s.key] || '').trim() || '（未記入）');
     lines.push('');
   });
+  const kpts=(state.kptEntries||[]).filter(x=>x.date===currentDate);
+  if(kpts.length){
+    lines.push('📝 KPT');
+    kpts.sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)).forEach(x=>{
+      if(x.keep) lines.push('K：'+x.keep);
+      if(x.problem) lines.push('P（'+priorityLabel(x.priority)+'）：'+x.problem);
+      if(x.tryText) lines.push('T：'+x.tryText+'［'+(x.targetDate||'')+'］');
+    });
+  }
   return lines.join('\n').trim();
 }
 
@@ -906,6 +1024,14 @@ document.getElementById('copyInviteBtn').addEventListener('click',async()=>{if(!
 document.getElementById('leaveTeamBtn').addEventListener('click',async()=>{if(!currentTeam||!confirm('このチームから退出しますか？'))return;try{await window.firebaseBridge.leaveTeam(currentTeam.id);resetTeamUI();showToast('チームから退出しました')}catch(e){console.error(e);showToast('退出に失敗しました')}});
 document.getElementById('teamDateFilter').addEventListener('change',()=>refreshTeamData());
 
+
+document.getElementById('kptToggle').addEventListener('click',()=>{
+  const form=document.getElementById('kptForm');form.classList.toggle('show');
+  document.getElementById('kptToggle').textContent=form.classList.contains('show')?'閉じる':'＋追加';
+  setDefaultKptTarget();
+});
+document.getElementById('kptSave').addEventListener('click',saveKpt);
+
 function updateAuthUI(user){
   const name = document.getElementById('authName');
   const status = document.getElementById('authStatus');
@@ -928,7 +1054,7 @@ window.addEventListener('pdca-auth-changed', async (event)=>{
   if(event.detail.user){
     await loadData();
     await refreshTeamData();
-    renderWidget(); renderDayStrip(); loadFieldsForCurrentDate(); renderRing(); renderHistory();
+    renderWidget(); renderDayStrip(); loadFieldsForCurrentDate(); setDefaultKptTarget(); renderKptList(); renderRing(); renderHistory();
   }
 });
 
@@ -966,6 +1092,8 @@ document.getElementById('datePicker').addEventListener('change', (e)=>{
   renderWidget();
   renderDayStrip();
   loadFieldsForCurrentDate();
+  setDefaultKptTarget();
+  renderKptList();
   renderRing();
   renderHistory();
 })();
